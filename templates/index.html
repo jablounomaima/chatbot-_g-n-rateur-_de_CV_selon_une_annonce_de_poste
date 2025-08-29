@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chatbot CV</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container py-5">
+    <h1 class="text-center">🤖 Chatbot Générateur de CV</h1>
+    <p class="text-center">Collez une annonce de poste et obtenez un CV personnalisé en 2 minutes.</p>
+    <textarea id="job_ad" class="form-control mb-3" rows="6" placeholder="Collez ici l'annonce de poste..."></textarea>
+    <button onclick="startChat()" class="btn btn-primary">Démarrer</button>
+  </div>
+  <script>
+    function startChat() {
+      const job_ad = document.getElementById("job_ad").value;
+      if (!job_ad) return alert("Veuillez coller une annonce !");
+      fetch("/api/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ job_ad })
+      }).then(() => window.location.href = "/chat");
+    }
+  </script>
+</body>
+</html>

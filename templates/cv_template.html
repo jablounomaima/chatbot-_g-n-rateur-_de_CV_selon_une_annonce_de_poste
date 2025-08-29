@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial; margin: 30px; }
+    h1 { color: #2c3e50; }
+    h2 { color: #3498db; border-bottom: 2px solid #3498db; }
+    .section { margin: 15px 0; }
+  </style>
+</head>
+<body>
+  <h1>{{ name }}</h1>
+  <p>{{ email }} | {{ phone }}</p>
+
+  <div class="section">
+    <h2>🎯 Objectif</h2>
+    <p>{{ objective }}</p>
+  </div>
+
+  <div class="section">
+    <h2>💼 Expérience</h2>
+    <p>{{ experience }}</p>
+  </div>
+
+  <div class="section">
+    <h2>🛠️ Compétences</h2>
+    <p>{{ skills }}</p>
+  </div>
+
+  <div class="section">
+    <h2>🎓 Formation</h2>
+    <p>{{ education }}</p>
+  </div>
+
+  {% if hobbies %}
+  <div class="section">
+    <h2>🎨 Centres d'intérêt</h2>
+    <p>{{ hobbies }}</p>
+  </div>
+  {% endif %}
+
+  <div class="section">
+    <h2>🔍 Mots-clés de l'annonce</h2>
+    <p>{{ keywords | join(", ") }}</p>
+  </div>
+</body>
+</html>
