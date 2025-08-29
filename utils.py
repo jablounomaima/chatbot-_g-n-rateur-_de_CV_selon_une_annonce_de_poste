@@ -44,26 +44,28 @@ def extract_keywords_from_job(job_text):
     return [ent.text.capitalize() for ent in doc.ents if ent.label_ in ["SKILL", "WORK_OF_ART", "PRODUCT"]][:5]
 
 def generate_suggestions(job_text):
-    """
-    Génère plusieurs suggestions adaptées à l'annonce.
-    """
     doc = nlp(job_text.lower())
+    
+    # Extraire compétences, mots-clés
     skills = [ent.text.capitalize() for ent in doc.ents if ent.label_ in ["SKILL", "WORK_OF_ART", "PRODUCT"]]
     if not skills:
         skills = ["React", "Gestion de projet", "Communication"]
 
-    job_titles = ["développeur", "chef de projet", "data analyst", "commercial"]
+    job_titles = ["développeur", "chef de projet", "data analyst", "commercial", "designer"]
     detected_job = "professionnel"
     for job in job_titles:
         if job in job_text.lower():
             detected_job = job
             break
 
+    locations = [ent.text.title() for ent in doc.ents if ent.label_ == "GPE"]
+    location = locations[0] if locations else "France"
+
     return {
         "experience": [
             f"En tant que {detected_job}, j'ai piloté des projets centrés sur {skills[0]}, en méthode Agile.",
             f"Expérience clé : conception et mise en œuvre de solutions autour de {skills[0]}.",
-            f"J'ai amélioré les performances de 30 % grâce à une optimisation ciblée sur {skills[0]}."
+            f"Amélioration des performances de 30 % grâce à une optimisation ciblée sur {skills[0]}."
         ],
         "skills": [
             f"Compétences : {', '.join(skills[:4])}, travail en équipe, communication.",
@@ -81,8 +83,8 @@ def generate_suggestions(job_text):
             f"Voyages et participation à des hackathons {skills[0]}."
         ],
         "objective": [
-            f"À la recherche d’un poste de {detected_job} où je pourrai appliquer mes compétences en {skills[0]}.",
-            f"Objectif : contribuer à des projets innovants dans un environnement dynamique.",
+            f"À la recherche d’un poste de {detected_job} à {location}, où je pourrai appliquer mes compétences en {skills[0]}.",
+            f"Objectif : contribuer à des projets innovants dans un environnement dynamique et collaboratif.",
             f"Souhaite rejoindre une entreprise en croissance pour développer des solutions autour de {skills[0]}."
         ]
     }
