@@ -1,9 +1,8 @@
-# app.py
 from flask import Flask, render_template, request, jsonify, send_file
 import json
 import os
-from utils import extract_keywords_from_job, generate_pdf_cv, generate_suggestions
-from weasyprint import HTML
+from utils import extract_keywords_from_job, generate_suggestions, generate_pdf_cv
+
 app = Flask(__name__)
 USER_DATA_FILE = "data/user_data.json"
 
@@ -27,14 +26,16 @@ def index():
 def chat():
     return render_template("chat.html")
 
-# app.py – dans la route /api/start
 @app.route("/api/start", methods=["POST"])
 def start():
     data = request.json
-    job_ad = data.get("job_ad", "")
+    job_ad = data.get("job_ad", "").strip()
+    
+    if not job_ad:
+        return jsonify({"error": "L'annonce est vide"}), 400
 
     keywords = extract_keywords_from_job(job_ad)
-    suggestions = generate_suggestions(job_ad)  # ✅ Appel ici
+    suggestions = generate_suggestions(job_ad)  # ✅ Fonction définie dans utils.py
 
     user_data = {
         "job_ad": job_ad,
@@ -50,36 +51,50 @@ def start():
         "suggestion": None
     })
 
-# app.py – dans /api/next
 @app.route("/api/next", methods=["POST"])
 def next_step():
     user_data = load_user_data()
     step = user_data.get("step", 0)
+    message = request.json.get("message", "").strip()
 
     steps = ["name", "email", "phone", "experience", "skills", "education", "hobbies"]
     questions = {
-        "name": "Quel est votre nom complet ?",
-        "email": "Quel est votre email ?",
-        "phone": "Quel est votre numéro de téléphone ?",
-        "experience": "Décrivez une expérience professionnelle clé liée à cette annonce.",
-        "skills": "Quelles sont vos compétences techniques principales ?",
-        "education": "Quel est votre niveau d'étude et formations ?",
-        "hobbies": "Souhaitez-vous ajouter des centres d’intérêt ? (facultatif)"
+        "name": "Quel est votre email ?",
+        "email": "Quel est votre numéro de téléphone ?",
+        "phone": "Décrivez une expérience professionnelle clé liée à cette annonce.",
+        "experience": "Quelles sont vos compétences techniques principales ?",
+        "skills": "Quel est votre niveau d'étude et formations ?",
+        "education": "Souhaitez-vous ajouter des centres d’intérêt ? (facultatif)",
+        "hobbies": "✅ CV presque prêt ! Téléchargez-le ci-dessous."
     }
 
+    # Sauvegarder la réponse actuelle
+    if step < len(steps):
+        current_field = steps[step]
+        user_data[current_field] = message
+        user_data["step"] += 1
+        save_user_data(user_data)
+
+    # Préparer la prochaine étape
     if step >= len(steps):
-        return jsonify({"message": "Terminé !", "step": "done", "suggestion": None})
+        return jsonify({
+            "message": "Terminé !",
+            "step": "done",
+            "suggestion": None
+        })
 
-    current_step = steps[step]
-    next_step = steps[step + 1] if step + 1 < len(steps) else "done"
+    next_step_key = steps[step] if step < len(steps) else "done"
+    next_message = questions.get(next_step_key, "Merci pour vos réponses !")
 
-    # ✅ Récupérer la suggestion pour la prochaine question
-    suggestion = user_data["suggestions"].get(next_step) if next_step != "done" else None
+    # Obtenir la suggestion pour la prochaine question
+    suggestion = None
+    if next_step_key != "done" and "suggestions" in user_data:
+        suggestion = user_data["suggestions"].get(next_step_key)
 
     return jsonify({
-        "message": questions[current_step],
-        "step": current_step,
-        "suggestion": suggestion  # ✅ Envoyée au frontend
+        "message": next_message,
+        "step": next_step_key,
+        "suggestion": suggestion
     })
 
 @app.route("/api/generate_cv", methods=["GET"])

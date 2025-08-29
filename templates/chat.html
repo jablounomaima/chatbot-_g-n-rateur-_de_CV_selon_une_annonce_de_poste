@@ -1,49 +1,142 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Chat CV</title>
+  <title>💬 Assistant CV</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    .chat { height: 70vh; overflow-y: scroll; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
-    .user { text-align: right; margin: 10px 0; }
-    .bot { text-align: left; margin: 10px 0; }
+    .chat {
+      height: 70vh;
+      overflow-y: scroll;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: white;
+      border-radius: 8px;
+    }
+    .user {
+      text-align: right;
+      margin: 10px 0;
+    }
+    .bot {
+      text-align: left;
+      margin: 10px 0;
+    }
+    .suggestion {
+      background-color: #f8f9fa;
+      border-left: 4px solid #0d6efd;
+      padding: 8px 12px;
+      margin-top: 8px;
+      font-size: 0.9em;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body class="bg-light">
   <div class="container py-5">
-    <h2>💬 Assistant CV</h2>
+    <h2 class="text-center mb-4">💬 Assistant Générateur de CV</h2>
     <div id="chat" class="chat"></div>
-    <input id="userInput" class="form-control" placeholder="Votre réponse..." onkeydown="if(event.key==='Enter') sendMessage()">
+    <input
+      id="userInput"
+      class="form-control"
+      placeholder="Votre réponse..."
+      onkeydown="if(event.key === 'Enter') sendMessage()"
+    >
     <button onclick="sendMessage()" class="btn btn-success mt-2">Envoyer</button>
-    <a id="downloadBtn" href="/api/generate_cv" class="btn btn-primary mt-3 d-none">Télécharger le CV</a>
+    <a
+      id="downloadBtn"
+      href="/api/generate_cv"
+      class="btn btn-primary mt-3 d-none"
+      download
+    >
+      📄 Télécharger le CV
+    </a>
   </div>
+
   <script>
+    // Récupérer les éléments
+    const chat = document.getElementById("chat");
+    const userInput = document.getElementById("userInput");
+    const downloadBtn = document.getElementById("downloadBtn");
+
+    // Ajouter un message du bot (avec suggestion)
     function addBotMessage(text, suggestion) {
       const div = document.createElement("div");
       div.className = "bot";
-      div.innerHTML = `<strong>🤖 Bot :</strong> ${text}`;
-    
+      div.innerHTML = `<strong>🤖 Assistant :</strong> ${text.replace(/\n/g, '<br>')}`;
+
       if (suggestion) {
         const sugDiv = document.createElement("div");
-        sugDiv.className = "alert alert-light mt-2 border";
-        sugDiv.style.fontSize = "0.9em";
+        sugDiv.className = "suggestion";
         sugDiv.innerHTML = `
           <strong>💡 Suggestion :</strong><br>
-          <em>${suggestion}</em><br>
-          <button class="btn btn-sm btn-outline-success mt-1" onclick='useSuggestion(\`${suggestion}\`)'>
+          <em>${suggestion.replace(/\n/g, '<br>')}</em><br>
+          <button class="btn btn-sm btn-outline-primary mt-1" onclick='useSuggestion(\`${suggestion.replace(/`/g, '\\`')}\`)'>
             ✅ Utiliser cette suggestion
           </button>
         `;
         div.appendChild(sugDiv);
       }
-    
+
       chat.appendChild(div);
       chat.scrollTop = chat.scrollHeight;
     }
-    
+
+    // Utiliser une suggestion
     function useSuggestion(text) {
-      document.getElementById("userInput").value = text;
+      userInput.value = text;
     }
-    </script>
+
+    // Envoyer une réponse
+    function sendMessage() {
+      const message = userInput.value.trim();
+      if (!message) return;
+
+      // Ajouter le message utilisateur
+      const userDiv = document.createElement("div");
+      userDiv.className = "user";
+      userDiv.innerHTML = `<strong>Vous :</strong> ${message}`;
+      chat.appendChild(userDiv);
+
+      // Nettoyer l'input
+      userInput.value = "";
+      chat.scrollTop = chat.scrollHeight;
+
+      // Envoyer au serveur
+      fetch("/api/next", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: message })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Erreur HTTP: " + response.status);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.step === "done") {
+          addBotMessage("✅ CV généré avec succès ! Cliquez sur le bouton ci-dessous pour le télécharger.", null);
+          downloadBtn.classList.remove("d-none");
+        } else {
+          addBotMessage(data.message, data.suggestion);
+        }
+      })
+      .catch(err => {
+        console.error("Erreur:", err);
+        addBotMessage(
+          "❌ Une erreur est survenue. Vérifiez que le serveur Flask est en marche et qu’il n’y a pas d’erreur dans la console."
+        );
+      });
+    }
+
+    // Message de bienvenue au chargement
+    document.addEventListener("DOMContentLoaded", () => {
+      addBotMessage("Bonjour ! Je suis votre assistant CV. Pour commencer, quel est votre nom complet ?");
+    });
+  </script>
 </body>
 </html>

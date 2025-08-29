@@ -1,3 +1,4 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,15 +12,33 @@
     <textarea id="job_ad" class="form-control mb-3" rows="6" placeholder="Collez ici l'annonce de poste..."></textarea>
     <button onclick="startChat()" class="btn btn-primary">Démarrer</button>
   </div>
+
   <script>
     function startChat() {
-      const job_ad = document.getElementById("job_ad").value;
-      if (!job_ad) return alert("Veuillez coller une annonce !");
+      const job_ad = document.getElementById("job_ad").value.trim();
+      if (!job_ad) {
+        alert("Veuillez coller une annonce de poste !");
+        return;
+      }
+
+      // Envoie une requête POST
       fetch("/api/start", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ job_ad })
-      }).then(() => window.location.href = "/chat");
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ job_ad: job_ad })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Erreur HTTP");
+        }
+        window.location.href = "/chat";  // Redirige vers le chat
+      })
+      .catch(error => {
+        console.error("Erreur:", error);
+        alert("Erreur : impossible de démarrer le chat. Vérifiez que le serveur est lancé.");
+      });
     }
   </script>
 </body>
