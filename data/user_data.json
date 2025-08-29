@@ -1,30 +1,39 @@
 {
-    "job_ad": "À propos de l’offre d’emploi\n🚀 Rejoignez notre nouvelle équipe Cloud – Développeur Java / Angular (H/F)\n\n 📍 Lieu : Sousse\n 📅 Démarrage : Dès que possible\n 📢 Type de contrat : CDI\n\n\n🔍 Qui sommes-nous ?\n\n TECH'UP Consulting est une société de développement tech en pleine croissance, spécialisée dans la conception de solutions cloud sur mesure. Dans le cadre d’un nouveau projet stratégique, nous lançons une équipe de 4 développeurs pour construire une plateforme moderne basée sur les dernières technologies Java et Angular.",
-    "keywords": [
-        "Croissance",
-        "Pleine",
-        "Démarrage",
-        "Heure",
-        "Sousse",
-        "Consulting",
-        "Tech'",
-        "Société",
-        "Emploi",
-        "Développeur"
-    ],
+    "job_ad": "À propos de l’offre d’emploi\n🚀 Rejoignez notre nouvelle équipe Cloud – Développeur Java / Angular (H/F)\n\n 📍 Lieu : Sousse\n 📅 Démarrage : Dès que possible\n 📢 Type de contrat : CDI\n\n\n🔍 Qui sommes-nous ?\n\n TECH'UP Consulting est une société de développement tech en pleine croissance, spécialisée dans la conception de solutions cloud sur mesure. Dans le cadre d’un nouveau projet stratégique, nous lançons une équipe de 4 développeurs pour construire une plateforme moderne basée sur les dernières technologies Java et Angular.\n\n\n🎯 Ce que vous allez faire\n\n En tant que développeur Java / Angular, vous serez au cœur du projet dès ses débuts. Vos missions :\nParticiper à la conception et au développement d’une nouvelle application cloud full-stack\nImplémenter les composants backend (Java / Spring Boot) et frontend (Angular)\nCollaborer avec l'équipe produit pour affiner les specs fonctionnelles\nContribuer aux choix d'architecture et aux bonnes pratiques de développement (tests, CI/CD, clean code)\nTravailler dans un environnement agile, en lien direct avec une équipe tech expérimentée\n\n\n🛠 Stack technique du projet\n\nBackend : Java 17, Spring Boot, REST APIs\nFrontend : Angular 17, RxJS, SCSS\nCloud : AWS (ou GCP/Azure selon profil), Docker, Kubernetes\nOutils : Git, GitLab CI/CD, Jira, SonarQube\n\n\n🧑‍💻 Profil recherché\n\n2 à 5 ans d’expérience en développement Java et Angular\nMaîtrise de Spring Boot, Angular et des architectures REST\nSens du travail en équipe, esprit d’initiative, appétence pour les bonnes pratiques\nUne première expérience sur un projet cloud est un plus\nEnvie de s’investir dans un projet neuf avec une forte autonomie\n\n\n💡 Pourquoi nous rejoindre ?\n\nCréation d’équipe → Vous participerez à la mise en place d’un projet from scratch\nCulture tech → Équipe à taille humaine, autonomie, code review, veille partagée\nEnvironnement flexible → Télétravail partiel, horaires souples\nProjets innovants → Cloud, architecture microservices, modern stack\n\n\n📩 Intéressé(e) ?\n\n Postulez directement ici ou envoyez-nous votre CV à jobs@techup-consulting.com\n On a hâte d’échanger avec vous !",
+    "keywords": [],
     "suggestions": {
-        "experience": "En tant que développeur, j'ai piloté des projets centrés sur Propos, dans un environnement Agile, en utilisant Emploi pour améliorer l'efficacité opérationnelle.",
-        "skills": "Compétences clés : Propos, Emploi, Équipe, travail en équipe, communication, résolution de problèmes.",
-        "education": "Master en Propos – Université de Lyon, 2020–2022. Projet sur l'optimisation des processus liés à Propos.",
-        "hobbies": "Passionné(e) par la veille technologique, les meetups Propos, et le bénévolat dans des projets éducatifs.",
-        "objective": "À la recherche d’un poste de développeur dans une entreprise innovante, où je pourrai appliquer mes compétences en Propos."
+        "experience": [
+            "En tant que développeur, j'ai piloté des projets centrés sur React, en méthode Agile.",
+            "Expérience clé : conception et mise en œuvre de solutions autour de React.",
+            "J'ai amélioré les performances de 30 % grâce à une optimisation ciblée sur React."
+        ],
+        "skills": [
+            "Compétences : React, Gestion de projet, Communication, travail en équipe, communication.",
+            "Maîtrise de React et des outils collaboratifs (Trello, Slack).",
+            "Expertise en React et en gestion de projet."
+        ],
+        "education": [
+            "Master en React – Université de Lyon, 2020–2022.",
+            "Formation en lien avec React, complétée par des certifications.",
+            "Diplôme en gestion de projet avec spécialisation en React."
+        ],
+        "hobbies": [
+            "Passionné(e) par la veille tech et les meetups React.",
+            "Jeux vidéo, lecture, et bénévolat dans l'enseignement numérique.",
+            "Voyages et participation à des hackathons React."
+        ],
+        "objective": [
+            "À la recherche d’un poste de développeur où je pourrai appliquer mes compétences en React.",
+            "Objectif : contribuer à des projets innovants dans un environnement dynamique.",
+            "Souhaite rejoindre une entreprise en croissance pour développer des solutions autour de React."
+        ]
     },
     "step": 7,
-    "name": "bb dd",
-    "email": "bb@gmail.com",
-    "phone": "888555",
-    "experience": "dev info",
-    "skills": "vfcgb",
-    "education": "Compétences clés : Propos, Emploi, Équipe, travail en équipe, communication, résolution de problèmes.",
-    "hobbies": "gncdng"
+    "name": "hgx,v",
+    "email": "aa@gmail.com",
+    "phone": "4",
+    "experience": "fsxdwbh<sbf<rfddddddddddddddddddddddddddddddd",
+    "skills": "Expérience clé : conception et mise en œuvre de solutions autour de React.",
+    "education": "Compétences : React, Gestion de projet, Communication, travail en équipe, communication.",
+    "hobbies": "Diplôme en gestion de projet avec spécialisation en React."
 }

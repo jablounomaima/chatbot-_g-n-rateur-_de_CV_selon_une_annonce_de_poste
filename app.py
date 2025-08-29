@@ -48,7 +48,7 @@ def start():
     return jsonify({
         "message": "Bonjour ! Je suis votre assistant CV. Pour commencer, quel est votre nom complet ?",
         "step": "name",
-        "suggestion": None
+        "suggestions": []  # Pas de suggestion pour le nom
     })
 
 @app.route("/api/next", methods=["POST"])
@@ -60,41 +60,27 @@ def next_step():
     steps = ["name", "email", "phone", "experience", "skills", "education", "hobbies"]
     questions = {
         "name": "Quel est votre email ?",
-        "email": "Quel est votre numéro de téléphone ?",
-        "phone": "Décrivez une expérience professionnelle clé liée à cette annonce.",
-        "experience": "Quelles sont vos compétences techniques principales ?",
-        "skills": "Quel est votre niveau d'étude et formations ?",
-        "education": "Souhaitez-vous ajouter des centres d’intérêt ? (facultatif)",
-        "hobbies": "✅ CV presque prêt ! Téléchargez-le ci-dessous."
+        "email": "Quel est votre téléphone ?",
+        "phone": "Décrivez une expérience pertinente.",
+        "experience": "Vos compétences techniques ?",
+        "skills": "Vos formations ?",
+        "education": "Centres d’intérêt ?",
+        "hobbies": "✅ CV prêt !"
     }
 
-    # Sauvegarder la réponse actuelle
     if step < len(steps):
-        current_field = steps[step]
-        user_data[current_field] = message
+        user_data[steps[step]] = message
         user_data["step"] += 1
         save_user_data(user_data)
 
-    # Préparer la prochaine étape
     if step >= len(steps):
-        return jsonify({
-            "message": "Terminé !",
-            "step": "done",
-            "suggestion": None
-        })
+        return jsonify({"message": "Terminé !", "step": "done", "suggestions": []})
 
-    next_step_key = steps[step] if step < len(steps) else "done"
-    next_message = questions.get(next_step_key, "Merci pour vos réponses !")
-
-    # Obtenir la suggestion pour la prochaine question
-    suggestion = None
-    if next_step_key != "done" and "suggestions" in user_data:
-        suggestion = user_data["suggestions"].get(next_step_key)
-
+    next_step_key = steps[step]
     return jsonify({
-        "message": next_message,
+        "message": questions[next_step_key],
         "step": next_step_key,
-        "suggestion": suggestion
+        "suggestions": user_data["suggestions"].get(next_step_key, [])  # ✅ Envoie la liste
     })
 
 @app.route("/api/generate_cv", methods=["GET"])
